@@ -1,0 +1,13 @@
+<component name="libraryTable">
+  <library name="Maven: javax.persistence:ejb:3.0-public_review">
+    <CLASSES>
+      <root url="jar://$MAVEN_REPOSITORY$/javax/persistence/ejb/3.0-public_review/ejb-3.0-public_review.jar!/" />
+    </CLASSES>
+    <JAVADOC>
+      <root url="jar://$MAVEN_REPOSITORY$/javax/persistence/ejb/3.0-public_review/ejb-3.0-public_review-javadoc.jar!/" />
+    </JAVADOC>
+    <SOURCES>
+      <root url="jar://$MAVEN_REPOSITORY$/javax/persistence/ejb/3.0-public_review/ejb-3.0-public_review-sources.jar!/" />
+    </SOURCES>
+  </library>
+</component>

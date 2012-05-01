@@ -14,18 +14,8 @@ import java.util.List;
  * To change this template use File | Settings | File Templates.
  */
 public class TdrwTest extends TestCase {
-    public void testFile() throws FileNotFoundException, IOException{
-        File file = new File("/Users/kodaka/tmp/tdl.json");
-        FileReader fr = new FileReader(file);
-        BufferedReader br = new BufferedReader(fr);
-        StringBuilder sb = new StringBuilder(0);
-
-        String line;
-        while ((line = br.readLine()) != null ){
-            sb.append(line);
-        }
-        String jsonText = sb.toString();
-//        System.out.println(jsonText);
+    public void testDecodeJson() throws FileNotFoundException, IOException{
+        String jsonText = readFromFile("/Users/kodaka/tmp/tdl.json");
         Tdrw tdrw = new Tdrw();
         List list = tdrw.decodeJson(jsonText);
 
@@ -43,5 +33,25 @@ public class TdrwTest extends TestCase {
             }
             System.out.println();
         }
+    }
+
+    private String readFromFile(String fileName) throws FileNotFoundException, IOException{
+        File file = new File(fileName);
+        FileReader fr = new FileReader(file);
+        BufferedReader br = new BufferedReader(fr);
+        StringBuilder sb = new StringBuilder(0);
+
+        String line;
+        while ((line = br.readLine()) != null ){
+            sb.append(line);
+        }
+        return sb.toString();
+    }
+
+    public void testCreateEntity() throws FileNotFoundException, IOException{
+        String jsonText = readFromFile("/Users/kodaka/tmp/tdl.json");
+        Tdrw tdrw = new Tdrw();
+        List list = tdrw.decodeJson(jsonText);
+        List<AttractionWaiting> waitingList = tdrw.createEntityList(list);
     }
 }
