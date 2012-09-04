@@ -22,11 +22,12 @@ public class Tdrw {
 	}
 
 	public void start() {
-		getOneRecord();
+		getOnePark(tdlUrl);
+		getOnePark(tdsUrl);
 	}
 
-	private void getOneRecord() {
-		TextBuilder tb = new UrlTextBuilder(tdsUrl);
+	private void getOnePark(String url) {
+		TextBuilder tb = new UrlTextBuilder(url);
 		String json = tb.getText();
 		System.out.println(json);
 
@@ -34,18 +35,18 @@ public class Tdrw {
 		rj.setJson(json);
 		insertJson(rj);
 
-		 rj = findRawJsonByPrimaryKey(2L);
+//		rj = findRawJsonByPrimaryKey(2L);
 
 		List<Object> list = null;
 		try {
 			list = decodeJson(rj.getJson());
+			processOneJson(list, rj.getQueryDate());
 		} catch (JSONException ex) {
 			System.out.println("Not Open!");
 		}
-		processOneJson(list, rj.getQueryDate());
 	}
 
-	private void processOneJson(List<Object> list, Timestamp queryDate) {
+	private void processOneJson(List list, Timestamp queryDate) {
 		for (Object field : list) {
 			System.out.println(field.toString());
 			@SuppressWarnings("unchecked")
