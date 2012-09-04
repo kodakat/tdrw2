@@ -1,7 +1,7 @@
 package tdrw;
 
-import java.util.Date;
-import java.util.LinkedHashMap;
+import java.sql.Timestamp;
+import java.util.HashMap;
 import java.util.List;
 
 import javax.persistence.EntityManager;
@@ -10,6 +10,7 @@ import javax.persistence.EntityTransaction;
 import javax.persistence.Persistence;
 
 import net.arnx.jsonic.JSON;
+import net.arnx.jsonic.JSONException;
 
 /**
  */
@@ -17,41 +18,47 @@ public class Tdrw {
 	public static final String tdsUrl = "http://www.tokyodisneyresort.co.jp/todayinfo/tds.json?_=1335615761675";
 	public static final String tdlUrl = "http://www.tokyodisneyresort.co.jp/todayinfo/tdl.json?_=1335615761675";
 
-    public Tdrw(){
-    }
-
-    public void start(){
-    	getOneRecord();
-    }
-
-    private void getOneRecord() {
-    	TextBuilder tb = new UrlTextBuilder(tdsUrl);
-    	String json = tb.getText();
-    	System.out.println(json);
-    	
-    	RawJson rj = new RawJson(2, new Date());
-    	rj.setJson(json);
-    	insertJson(rj);
-    	
-    	rj = findRawJsonByPrimaryKey(2L);
-    	List list =  decodeJson(rj.getJson());
-    	
-    	processOneRecord(list);
+	public Tdrw() {
 	}
-    
 
-	private void processOneRecord(List list) {
-    	for (Object field: list){
-    		System.out.println(field.toString());
-    		@SuppressWarnings("unchecked")
-			LinkedHashMap<String, String> map = (LinkedHashMap<String, String>) field;
-    		AttractionWaiting aw = createAttractionWaingEntity(map);
-    		insertAttractionWaiting(aw);
-    	}		
+	public void start() {
+		getOneRecord();
+	}
+
+	private void getOneRecord() {
+		TextBuilder tb = new UrlTextBuilder(tdsUrl);
+		String json = tb.getText();
+		System.out.println(json);
+
+		RawJson rj = new RawJson(2, new Timestamp(System.currentTimeMillis()));
+		rj.setJson(json);
+		insertJson(rj);
+
+		 rj = findRawJsonByPrimaryKey(2L);
+
+		List<Object> list = null;
+		try {
+			list = decodeJson(rj.getJson());
+		} catch (JSONException ex) {
+			System.out.println("Not Open!");
+		}
+		processOneJson(list, rj.getQueryDate());
+	}
+
+	private void processOneJson(List<Object> list, Timestamp queryDate) {
+		for (Object field : list) {
+			System.out.println(field.toString());
+			@SuppressWarnings("unchecked")
+			HashMap<String, String> map = (HashMap<String, String>) field;
+			AttractionWaiting aw = createAttractionWaingEntity(map);
+			aw.setQueryDate(queryDate);
+			insertAttractionWaiting(aw);
+		}
 	}
 
 	private void insertAttractionWaiting(AttractionWaiting aw) {
-		EntityManagerFactory factory = Persistence.createEntityManagerFactory("tdr-unit");
+		EntityManagerFactory factory = Persistence
+				.createEntityManagerFactory("tdr-unit");
 		EntityManager em = factory.createEntityManager();
 		EntityTransaction xa = em.getTransaction();
 		xa.begin();
@@ -61,7 +68,8 @@ public class Tdrw {
 		factory.close();
 	}
 
-	private AttractionWaiting createAttractionWaingEntity(LinkedHashMap<String, String> map) {
+	private AttractionWaiting createAttractionWaingEntity(
+			HashMap<String, String> map) {
 		AttractionWaiting aw = new AttractionWaiting();
 		aw.setAttrId(Integer.valueOf(map.get("attr_id")));
 		aw.setAreaId(Integer.valueOf(map.get("area_id")));
@@ -82,23 +90,24 @@ public class Tdrw {
 		aw.setUpdated(map.get("update"));
 		System.out.println(aw.toString());
 		return aw;
-//		for (Object key: map.keySet()){
-//			System.out.println((String) key + ":" + map.get(key));
-//		}
-		
+		// for (Object key: map.keySet()){
+		// System.out.println((String) key + ":" + map.get(key));
+		// }
+
 	}
 
 	private RawJson findRawJsonByPrimaryKey(long i) {
-		EntityManagerFactory factory = Persistence.createEntityManagerFactory("tdr-unit");
+		EntityManagerFactory factory = Persistence
+				.createEntityManagerFactory("tdr-unit");
 		EntityManager em = factory.createEntityManager();
 		RawJson rj = (RawJson) em.find(RawJson.class, new Long(i));
 		System.out.println(rj.json);
 		return rj;
-		
 	}
 
 	private void insertJson(RawJson rj) {
-		EntityManagerFactory factory = Persistence.createEntityManagerFactory("tdr-unit");
+		EntityManagerFactory factory = Persistence
+				.createEntityManagerFactory("tdr-unit");
 		EntityManager em = factory.createEntityManager();
 		EntityTransaction xa = em.getTransaction();
 		xa.begin();
@@ -108,11 +117,11 @@ public class Tdrw {
 		factory.close();
 	}
 
-	public List decodeJson(String json){
-        return (List) JSON.decode(json) ;
-    }
+	public List decodeJson(String json) {
+		return (List) JSON.decode(json);
+	}
 
-    public List<AttractionWaiting> createEntityList(List list) {
-        return null;
-    }
+	public List<AttractionWaiting> createEntityList(List list) {
+		return null;
+	}
 }

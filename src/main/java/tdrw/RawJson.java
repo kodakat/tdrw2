@@ -1,6 +1,6 @@
 package tdrw;
 
-import java.util.Date;
+import java.sql.Timestamp;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -25,11 +25,11 @@ public class RawJson {
 		this.park = park;
 	}
 
-	public Date getQueryDate() {
+	public Timestamp getQueryDate() {
 		return queryDate;
 	}
 
-	public void setQueryDate(Date queryDate) {
+	public void setQueryDate(Timestamp queryDate) {
 		this.queryDate = queryDate;
 	}
 
@@ -42,13 +42,14 @@ public class RawJson {
 	}
 
 	@Column
-	public Date queryDate;
+	public Timestamp queryDate;
 	
 	@Column(length = 40000)
 	public String json;
 
-	public RawJson(int park, Date date) {
+	public RawJson(int park, Timestamp date) {
 		this.park = park;
+		this.queryDate = date;
 	}
 	
 	public RawJson(){

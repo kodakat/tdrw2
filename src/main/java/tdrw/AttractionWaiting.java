@@ -1,5 +1,7 @@
 package tdrw;
 
+import java.sql.Timestamp;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -90,6 +92,25 @@ public class AttractionWaiting {
 
 	@Column
 	public String updated;
+	
+	@Column
+	public Timestamp queryDate;
+
+	public Timestamp getQueryDate() {
+		return queryDate;
+	}
+
+	public void setQueryDate(Timestamp queryDate) {
+		this.queryDate = queryDate;
+	}
+
+	public String getFpTimeFrom() {
+		return fpTimeFrom;
+	}
+
+	public String getFpTimeTo() {
+		return fpTimeTo;
+	}
 
 	public long getId() {
 		return id;
@@ -178,7 +199,6 @@ public class AttractionWaiting {
 	public void setFastpss(int fastpss) {
 		this.fastpss = fastpss;
 	}
-
 
 	public int getLimit() {
 		return limit2;
@@ -269,6 +289,11 @@ public class AttractionWaiting {
 			return false;
 		if (park != other.park)
 			return false;
+		if (queryDate == null) {
+			if (other.queryDate != null)
+				return false;
+		} else if (!queryDate.equals(other.queryDate))
+			return false;
 		if (status != other.status)
 			return false;
 		if (updated == null) {
@@ -304,6 +329,8 @@ public class AttractionWaiting {
 		result = prime * result + (int) (id ^ (id >>> 32));
 		result = prime * result + limit2;
 		result = prime * result + park;
+		result = prime * result
+				+ ((queryDate == null) ? 0 : queryDate.hashCode());
 		result = prime * result + status;
 		result = prime * result + ((updated == null) ? 0 : updated.hashCode());
 		result = prime * result + wait;
@@ -320,6 +347,6 @@ public class AttractionWaiting {
 				+ status + ", fastpss=" + fastpss + ", fpTimeFrom="
 				+ fpTimeFrom + ", fpTimeTo=" + fpTimeTo + ", limit2=" + limit2
 				+ ", wait=" + wait + ", greeting=" + greeting + ", updated="
-				+ updated + "]";
+				+ updated + ", queryDate=" + queryDate + "]";
 	}
 }
