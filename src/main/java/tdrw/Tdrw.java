@@ -41,7 +41,8 @@ public class Tdrw {
 	private void processOneRecord(List list) {
     	for (Object field: list){
     		System.out.println(field.toString());
-    		LinkedHashMap<String, String> map = (LinkedHashMap<String, String>) field;
+    		@SuppressWarnings("unchecked")
+			LinkedHashMap<String, String> map = (LinkedHashMap<String, String>) field;
     		AttractionWaiting aw = createAttractionWaingEntity(map);
     	}		
 	}
