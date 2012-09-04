@@ -11,7 +11,7 @@ import javax.persistence.Id;
 @Entity
 public class RawJson {
 	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	public long id;
 	
 	@Column

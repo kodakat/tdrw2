@@ -15,7 +15,8 @@ import net.arnx.jsonic.JSON;
  */
 public class Tdrw {
 	public static final String tdsUrl = "http://www.tokyodisneyresort.co.jp/todayinfo/tds.json?_=1335615761675";
-	
+	public static final String tdlUrl = "http://www.tokyodisneyresort.co.jp/todayinfo/tdl.json?_=1335615761675";
+
     public Tdrw(){
     }
 
@@ -31,7 +32,8 @@ public class Tdrw {
     	RawJson rj = new RawJson(2, new Date());
     	rj.setJson(json);
     	insertJson(rj);
-    	printJson(2L);
+    	
+    	rj = findRawJsonByPrimaryKey(2L);
     	List list =  decodeJson(rj.getJson());
     	
     	processOneRecord(list);
@@ -44,7 +46,19 @@ public class Tdrw {
     		@SuppressWarnings("unchecked")
 			LinkedHashMap<String, String> map = (LinkedHashMap<String, String>) field;
     		AttractionWaiting aw = createAttractionWaingEntity(map);
+    		insertAttractionWaiting(aw);
     	}		
+	}
+
+	private void insertAttractionWaiting(AttractionWaiting aw) {
+		EntityManagerFactory factory = Persistence.createEntityManagerFactory("tdr-unit");
+		EntityManager em = factory.createEntityManager();
+		EntityTransaction xa = em.getTransaction();
+		xa.begin();
+		em.persist(aw);
+		xa.commit();
+		em.close();
+		factory.close();
 	}
 
 	private AttractionWaiting createAttractionWaingEntity(LinkedHashMap<String, String> map) {
@@ -74,11 +88,12 @@ public class Tdrw {
 		
 	}
 
-	private void printJson(long i) {
+	private RawJson findRawJsonByPrimaryKey(long i) {
 		EntityManagerFactory factory = Persistence.createEntityManagerFactory("tdr-unit");
 		EntityManager em = factory.createEntityManager();
 		RawJson rj = (RawJson) em.find(RawJson.class, new Long(i));
 		System.out.println(rj.json);
+		return rj;
 		
 	}
 
