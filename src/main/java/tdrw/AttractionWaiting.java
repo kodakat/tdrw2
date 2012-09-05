@@ -19,6 +19,17 @@ public class AttractionWaiting {
 	public long id;
 
 	@Column
+	public long jsonId;
+	
+	public long getJsonId() {
+		return jsonId;
+	}
+
+	public void setJsonId(long jsonId) {
+		this.jsonId = jsonId;
+	}
+
+	@Column
 	public int attrId;
 
 	@Column
@@ -285,6 +296,8 @@ public class AttractionWaiting {
 			return false;
 		if (id != other.id)
 			return false;
+		if (jsonId != other.jsonId)
+			return false;
 		if (limit2 != other.limit2)
 			return false;
 		if (park != other.park)
@@ -327,6 +340,7 @@ public class AttractionWaiting {
 				+ ((fpTimeTo == null) ? 0 : fpTimeTo.hashCode());
 		result = prime * result + greeting;
 		result = prime * result + (int) (id ^ (id >>> 32));
+		result = prime * result + (int) (jsonId ^ (jsonId >>> 32));
 		result = prime * result + limit2;
 		result = prime * result + park;
 		result = prime * result
@@ -339,10 +353,10 @@ public class AttractionWaiting {
 
 	@Override
 	public String toString() {
-		return "AttractionWaiting [id=" + id + ", attrId=" + attrId
-				+ ", areaId=" + areaId + ", attr_name=" + attr_name
-				+ ", area_name=" + area_name + ", attrUrl=" + attrUrl
-				+ ", attrImg=" + attrImg + ", attrSort=" + attrSort
+		return "AttractionWaiting [id=" + id + ", jsonId=" + jsonId
+				+ ", attrId=" + attrId + ", areaId=" + areaId + ", attr_name="
+				+ attr_name + ", area_name=" + area_name + ", attrUrl="
+				+ attrUrl + ", attrImg=" + attrImg + ", attrSort=" + attrSort
 				+ ", areaSort=" + areaSort + ", park=" + park + ", status="
 				+ status + ", fastpss=" + fastpss + ", fpTimeFrom="
 				+ fpTimeFrom + ", fpTimeTo=" + fpTimeTo + ", limit2=" + limit2

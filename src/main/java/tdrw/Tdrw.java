@@ -40,19 +40,20 @@ public class Tdrw {
 		List<Object> list = null;
 		try {
 			list = decodeJson(rj.getJson());
-			processOneJson(list, rj.getQueryDate());
+			processOneJson(list, rj);
 		} catch (JSONException ex) {
 			System.out.println("Not Open!");
 		}
 	}
 
-	private void processOneJson(List list, Timestamp queryDate) {
+	private void processOneJson(List<Object> list, RawJson json) {
 		for (Object field : list) {
 			System.out.println(field.toString());
 			@SuppressWarnings("unchecked")
 			HashMap<String, String> map = (HashMap<String, String>) field;
 			AttractionWaiting aw = createAttractionWaingEntity(map);
-			aw.setQueryDate(queryDate);
+			aw.setQueryDate(json.getQueryDate());
+			aw.setJsonId(json.getId());
 			insertAttractionWaiting(aw);
 		}
 	}
@@ -97,12 +98,13 @@ public class Tdrw {
 
 	}
 
+	@SuppressWarnings("unused")
 	private RawJson findRawJsonByPrimaryKey(long i) {
 		EntityManagerFactory factory = Persistence
 				.createEntityManagerFactory("tdr-unit");
 		EntityManager em = factory.createEntityManager();
 		RawJson rj = (RawJson) em.find(RawJson.class, new Long(i));
-		System.out.println(rj.json);
+		System.out.println(rj.getJson());
 		return rj;
 	}
 
@@ -118,11 +120,11 @@ public class Tdrw {
 		factory.close();
 	}
 
-	public List decodeJson(String json) {
-		return (List) JSON.decode(json);
+	public List<Object> decodeJson(String json) {
+		return JSON.decode(json);
 	}
 
-	public List<AttractionWaiting> createEntityList(List list) {
+	public List<AttractionWaiting> createEntityList(List<Object> list) {
 		return null;
 	}
 }

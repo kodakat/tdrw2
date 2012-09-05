@@ -12,10 +12,10 @@ import javax.persistence.Id;
 public class RawJson {
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
-	public long id;
+	private long id;
 	
 	@Column
-	public int park;
+	private int park;
 	
 	public int getPark() {
 		return park;
@@ -42,10 +42,18 @@ public class RawJson {
 	}
 
 	@Column
-	public Timestamp queryDate;
+	private Timestamp queryDate;
 	
+	public long getId() {
+		return id;
+	}
+
+	public void setId(long id) {
+		this.id = id;
+	}
+
 	@Column(length = 40000)
-	public String json;
+	private String json;
 
 	public RawJson(int park, Timestamp date) {
 		this.park = park;
