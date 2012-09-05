@@ -16,10 +16,10 @@ import javax.persistence.Id;
 public class AttractionWaiting {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	public long id;
+	private long id;
 
 	@Column
-	public long jsonId;
+	private long jsonId;
 	
 	public long getJsonId() {
 		return jsonId;
@@ -30,28 +30,28 @@ public class AttractionWaiting {
 	}
 
 	@Column
-	public int attrId;
+	private int attrId;
 
 	@Column
-	public int areaId;
+	private int areaId;
 
 	@Column
-	public String attr_name;
+	private String attr_name;
 
 	@Column
-	public String area_name;
+	private String area_name;
 
 	@Column
-	public String attrUrl;
+	private String attrUrl;
 
 	@Column
-	public String attrImg;
+	private String attrImg;
 
 	@Column
-	public int attrSort;
+	private int attrSort;
 
 	@Column
-	public int areaSort;
+	private int areaSort;
 	
 	public int getAreaSort() {
 		return areaSort;
@@ -62,19 +62,19 @@ public class AttractionWaiting {
 	}
 
 	@Column
-	public int park;
+	private int park;
 
 	@Column
-	public int status;
+	private int status;
 
 	@Column
-	public int fastpss;
+	private int fastpss;
 
 	@Column
-	public String fpTimeFrom;
+	private String fpTimeFrom;
 
 	@Column
-	public String fpTimeTo;
+	private String fpTimeTo;
 
 	public int getLimit2() {
 		return limit2;
@@ -93,19 +93,19 @@ public class AttractionWaiting {
 	}
 
 	@Column
-	public int limit2;
+	private int limit2;
 
 	@Column
-	public int wait;
+	private int wait;
 
 	@Column
-	public int greeting;
+	private int greeting;
 
 	@Column
-	public String updated;
+	private String updated;
 	
 	@Column
-	public Timestamp queryDate;
+	private Timestamp queryDate;
 
 	public Timestamp getQueryDate() {
 		return queryDate;
