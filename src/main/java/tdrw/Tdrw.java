@@ -9,6 +9,9 @@ import javax.persistence.EntityManagerFactory;
 import javax.persistence.EntityTransaction;
 import javax.persistence.Persistence;
 
+import tdrw.entity.AttractionWaiting;
+import tdrw.entity.RawJson;
+
 import net.arnx.jsonic.JSON;
 import net.arnx.jsonic.JSONException;
 
@@ -22,18 +25,18 @@ public class Tdrw {
 	}
 
 	public void start() {
-		getOnePark(tdlUrl);
-		getOnePark(tdsUrl);
+		getOnePark(1, tdlUrl);
+		getOnePark(2, tdsUrl);
 	}
 
-	private void getOnePark(String url) {
-		TextBuilder tb = new UrlTextBuilder(url);
+	private void getOnePark(int park, String url) {
+		JsonRetriever tb = new UrlJsonRetriever(url);
 		String json = tb.getText();
 		System.out.println(json);
 
-		RawJson rj = new RawJson(2, new Timestamp(System.currentTimeMillis()));
+		RawJson rj = new RawJson(park, new Timestamp(System.currentTimeMillis()));
 		rj.setJson(json);
-		insertJson(rj);
+		TdrwDao.insertJson(rj);
 
 //		rj = findRawJsonByPrimaryKey(2L);
 
@@ -54,20 +57,8 @@ public class Tdrw {
 			AttractionWaiting aw = createAttractionWaingEntity(map);
 			aw.setQueryDate(json.getQueryDate());
 			aw.setJsonId(json.getId());
-			insertAttractionWaiting(aw);
+			TdrwDao.insertAttractionWaiting(aw);
 		}
-	}
-
-	private void insertAttractionWaiting(AttractionWaiting aw) {
-		EntityManagerFactory factory = Persistence
-				.createEntityManagerFactory("tdr-unit");
-		EntityManager em = factory.createEntityManager();
-		EntityTransaction xa = em.getTransaction();
-		xa.begin();
-		em.persist(aw);
-		xa.commit();
-		em.close();
-		factory.close();
 	}
 
 	private AttractionWaiting createAttractionWaingEntity(
@@ -98,27 +89,6 @@ public class Tdrw {
 
 	}
 
-	@SuppressWarnings("unused")
-	private RawJson findRawJsonByPrimaryKey(long i) {
-		EntityManagerFactory factory = Persistence
-				.createEntityManagerFactory("tdr-unit");
-		EntityManager em = factory.createEntityManager();
-		RawJson rj = (RawJson) em.find(RawJson.class, new Long(i));
-		System.out.println(rj.getJson());
-		return rj;
-	}
-
-	private void insertJson(RawJson rj) {
-		EntityManagerFactory factory = Persistence
-				.createEntityManagerFactory("tdr-unit");
-		EntityManager em = factory.createEntityManager();
-		EntityTransaction xa = em.getTransaction();
-		xa.begin();
-		em.persist(rj);
-		xa.commit();
-		em.close();
-		factory.close();
-	}
 
 	public List<Object> decodeJson(String json) {
 		return JSON.decode(json);

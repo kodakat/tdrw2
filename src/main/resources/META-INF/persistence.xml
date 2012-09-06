@@ -5,8 +5,8 @@
    xsi:schemaLocation="http://java.sun.com/xml/ns/persistence http://java.sun.com/xml/ns/persistence/persistence_1_0.xsd">
    <persistence-unit name="tdr-unit" transaction-type="RESOURCE_LOCAL">
        <provider>org.hibernate.ejb.HibernatePersistence</provider>
-       <class>tdrw.RawJson</class>
-       <class>tdrw.AttractionWaiting</class>
+       <class>tdrw.entity.RawJson</class>
+       <class>tdrw.entity.AttractionWaiting</class>
        <properties>
            <property name="hibernate.dialect" value="org.hibernate.dialect.MySQLDialect" />
            <property name="hibernate.connection.driver_class" value="com.mysql.jdbc.Driver" />

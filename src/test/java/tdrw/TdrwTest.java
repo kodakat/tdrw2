@@ -6,6 +6,8 @@ import java.io.*;
 import java.util.HashMap;
 import java.util.List;
 
+import tdrw.entity.AttractionWaiting;
+
 /**
  * Created with IntelliJ IDEA.
  * User: kodaka
